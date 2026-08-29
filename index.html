@@ -1,43 +1,73 @@
-Wwebba Teste
-Início
-📝 SIMULADOS ONLINE
-Teste os seus conhecimentos.
-Escolha uma disciplina, faça o simulado e veja o seu resultado imediatamente.
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wwebba Teste</title>
 
-Começar agora
-Disciplinas
-20:00
-Anterior Próxima
-🏆
-Resultado
-Acertos
-Erros
-Aproveitamento
-Ver gabarito Fazer outro simulado
-Gabarito comentado
-Voltar ao início
-Painel de questões
-Área local para administrar questões neste dispositivo.
+    <link rel="stylesheet" href="style.css">
+</head>
 
-Senha do administrador
- Entrar
-Senha inicial: 1234 (altere no código antes de publicar).
+<body>
 
-Adicionar questão
+    <header>
+        <h1>Wwebba Teste</h1>
+        <p>Aprenda, pratique e teste os seus conhecimentos.</p>
+    </header>
 
- 
-Pergunta
- 
-Alternativa A
- 
-Alternativa B
- 
-Alternativa C
- 
-Alternativa D
- 
-Resposta correta: A
- 
-Explicação do gabarito
- Adicionar questão
-© 2026 Wwebba Teste Administração
+    <main>
+        <section id="inicio">
+            <h2>Bem-vindo ao Wwebba Teste!</h2>
+
+            <p>Escolha uma disciplina para começar:</p>
+
+            <div class="disciplinas">
+                <button onclick="iniciarTeste('Química')">
+                    🧪 Química
+                </button>
+
+                <button onclick="iniciarTeste('Português')">
+                    📚 Língua Portuguesa
+                </button>
+
+                <button onclick="iniciarTeste('Matemática')">
+                    📐 Matemática
+                </button>
+
+                <button onclick="iniciarTeste('Biologia')">
+                    🧬 Biologia
+                </button>
+            </div>
+        </section>
+
+        <section id="teste" class="oculto">
+            <h2 id="tituloTeste"></h2>
+
+            <div id="questao"></div>
+
+            <div id="opcoes"></div>
+
+            <button id="proxima" onclick="proximaQuestao()">
+                Próxima questão
+            </button>
+        </section>
+
+        <section id="resultado" class="oculto">
+            <h2>Resultado</h2>
+
+            <p id="pontuacao"></p>
+
+            <button onclick="voltarInicio()">
+                🔄 Fazer outro teste
+            </button>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Wwebba Teste</p>
+    </footer>
+
+    <script src="app.js"></script>
+
+</body>
+</html>
