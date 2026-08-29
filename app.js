@@ -1,232 +1,662 @@
-/* ================================
-   ALTERNATIVAS DO SIMULADO
-   ================================ */
+// ==========================================
+// WWEBBA TESTE — APP.JS
+// MOTOR DE SIMULADOS
+// ==========================================
 
-#quizArea {
-    padding: 70px 5%;
-    background: #f5f7fb;
+
+// ==========================================
+// MENU MOBILE
+// ==========================================
+
+const menuBtn = document.getElementById("menuBtn");
+const mainNav = document.getElementById("mainNav");
+
+if (menuBtn && mainNav) {
+    menuBtn.addEventListener("click", () => {
+        mainNav.classList.toggle("active");
+    });
 }
 
-.quiz-container {
-    max-width: 850px;
-    margin: 0 auto;
-    background: #ffffff;
-    padding: 35px;
-    border-radius: 18px;
-    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
-}
-
-.quiz-header {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    margin-bottom: 15px;
-    color: #68758a;
-    font-size: 14px;
-    font-weight: 600;
-}
-
-.quiz-progress {
-    width: 100%;
-    height: 6px;
-    background: #e8edf4;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 30px;
-}
-
-.quiz-progress div {
-    height: 100%;
-    background: #1769e0;
-    transition: width 0.3s ease;
-}
-
-.quiz-container h2 {
-    font-size: 24px;
-    line-height: 1.5;
-    margin-bottom: 28px;
-}
+document.querySelectorAll("#mainNav a").forEach(link => {
+    link.addEventListener("click", () => {
+        mainNav.classList.remove("active");
+    });
+});
 
 
-/* ALTERNATIVAS */
+// ==========================================
+// BANCO DE QUESTÕES — PRIMEIRO TESTE
+// ==========================================
 
-.alternativas {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
+const bancoQuestoes = {
 
-.alternativa {
-    width: 100%;
-    min-height: 58px;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 14px;
+    "Química": [
 
-    background: #ffffff;
-    border: 1px solid #dfe5ed;
-    border-radius: 10px;
+        {
+            pergunta: "Qual é o número atómico do oxigénio?",
 
-    color: #172033;
-    font-size: 16px;
-    text-align: left;
+            alternativas: [
+                "6",
+                "7",
+                "8",
+                "16"
+            ],
 
-    cursor: pointer;
-    transition: 0.2s ease;
-}
+            correta: 2,
+
+            explicacao:
+                "O oxigénio possui 8 protões no núcleo. " +
+                "Por isso, o seu número atómico é 8."
+        },
 
 
-/* LETRAS A, B, C, D */
+        {
+            pergunta:
+                "Qual destas partículas possui carga elétrica negativa?",
 
-.alternativa span {
-    flex-shrink: 0;
+            alternativas: [
+                "Protão",
+                "Neutrão",
+                "Eletrão",
+                "Núcleo"
+            ],
 
-    width: 30px;
-    height: 30px;
+            correta: 2,
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    border: 1px solid #cbd3df;
-    border-radius: 50%;
-
-    font-size: 13px;
-    font-weight: 700;
-
-    color: #536176;
-    background: #f8fafc;
-}
+            explicacao:
+                "O eletrão possui carga elétrica negativa. " +
+                "O protão possui carga positiva e o neutrão é eletricamente neutro."
+        },
 
 
-/* PASSAR O MOUSE */
+        {
+            pergunta:
+                "Qual é a fórmula química da água?",
 
-.alternativa:hover:not(:disabled) {
-    border-color: #1769e0;
-    background: #f7faff;
-}
+            alternativas: [
+                "CO₂",
+                "H₂O",
+                "O₂",
+                "H₂"
+            ],
 
+            correta: 1,
 
-/* RESPOSTA CORRETA */
-
-.alternativa.certa {
-    border-color: #20a464;
-    background: #edf9f2;
-}
-
-.alternativa.certa span {
-    border-color: #20a464;
-    color: #20a464;
-    background: #ffffff;
-}
+            explicacao:
+                "A molécula de água é constituída por dois átomos " +
+                "de hidrogénio e um átomo de oxigénio: H₂O."
+        },
 
 
-/* RESPOSTA ERRADA */
+        {
+            pergunta:
+                "Qual destas substâncias é formada por apenas um elemento químico?",
 
-.alternativa.errada {
-    border-color: #d64545;
-    background: #fff1f1;
-}
+            alternativas: [
+                "Água",
+                "Dióxido de carbono",
+                "Oxigénio",
+                "Cloreto de sódio"
+            ],
 
-.alternativa.errada span {
-    border-color: #d64545;
-    color: #d64545;
-    background: #ffffff;
-}
+            correta: 2,
 
-
-/* DESATIVAR DEPOIS DA RESPOSTA */
-
-.alternativa:disabled {
-    cursor: default;
-}
+            explicacao:
+                "O oxigénio molecular, O₂, é uma substância simples, " +
+                "pois é constituído apenas por átomos de oxigénio."
+        },
 
 
-/* FEEDBACK */
+        {
+            pergunta:
+                "Qual das seguintes partículas se encontra no núcleo do átomo?",
 
-.feedback {
-    margin-top: 25px;
-    padding: 18px;
-    border-radius: 12px;
-    line-height: 1.6;
-}
+            alternativas: [
+                "Eletrão",
+                "Protão",
+                "Eletrão livre",
+                "Fotão"
+            ],
 
-.feedback.certo {
-    background: #edf9f2;
-    border: 1px solid #bde8ce;
-}
+            correta: 1,
 
-.feedback.errado {
-    background: #fff1f1;
-    border: 1px solid #f0c2c2;
-}
+            explicacao:
+                "O núcleo atómico é constituído principalmente por protões " +
+                "e neutrões. Os eletrões encontram-se na eletrosfera."
+        }
 
-.feedback strong {
-    display: block;
-    margin-bottom: 6px;
-}
+    ]
+
+};
 
 
-/* BOTÃO PRÓXIMA */
+// ==========================================
+// ESTADO DO SIMULADO
+// ==========================================
 
-.next-btn {
-    margin-top: 20px;
-}
+let questoesAtuais = [];
 
+let indiceQuestao = 0;
 
-/* RESULTADO */
+let pontuacao = 0;
 
-.resultado {
-    text-align: center;
-}
-
-.resultado-icon {
-    font-size: 55px;
-    margin-bottom: 10px;
-}
-
-.pontuacao {
-    font-size: 55px;
-    font-weight: 800;
-    color: #1769e0;
-    margin: 15px 0 0;
-}
-
-.percentagem {
-    font-size: 22px;
-    font-weight: 700;
-    margin-bottom: 15px;
-}
+let simuladoIniciado = false;
 
 
-/* CELULAR */
+// ==========================================
+// CRIAR ÁREA DO SIMULADO
+// ==========================================
 
-@media (max-width: 600px) {
+const quizArea = document.createElement("section");
 
-    #quizArea {
-        padding: 45px 4%;
+quizArea.id = "quizArea";
+
+quizArea.style.display = "none";
+
+document.querySelector("main").appendChild(quizArea);
+
+
+// ==========================================
+// INICIAR SIMULADO
+// ==========================================
+
+function iniciarSimulado(disciplina) {
+
+    if (!bancoQuestoes[disciplina]) {
+
+        alert(
+            "Este simulado ainda está em desenvolvimento."
+        );
+
+        return;
     }
 
-    .quiz-container {
-        padding: 22px 16px;
-        border-radius: 14px;
+
+    questoesAtuais = bancoQuestoes[disciplina];
+
+    indiceQuestao = 0;
+
+    pontuacao = 0;
+
+    simuladoIniciado = true;
+
+
+    quizArea.style.display = "block";
+
+
+    mostrarQuestao();
+
+
+    quizArea.scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+
+// ==========================================
+// MOSTRAR QUESTÃO
+// ==========================================
+
+function mostrarQuestao() {
+
+    const questao =
+        questoesAtuais[indiceQuestao];
+
+
+    const numero =
+        indiceQuestao + 1;
+
+
+    const total =
+        questoesAtuais.length;
+
+
+    const progresso =
+        (numero / total) * 100;
+
+
+    quizArea.innerHTML = `
+
+        <div class="quiz-container">
+
+
+            <!-- CABEÇALHO -->
+
+            <div class="quiz-top">
+
+                <div>
+
+                    <span class="quiz-label">
+                        SIMULADO DE QUÍMICA
+                    </span>
+
+                    <h3>
+                        Questão ${numero}
+                        <span>/ ${total}</span>
+                    </h3>
+
+                </div>
+
+
+                <div class="quiz-score">
+
+                    ${pontuacao}
+                    ponto${pontuacao !== 1 ? "s" : ""}
+
+                </div>
+
+            </div>
+
+
+            <!-- PROGRESSO -->
+
+            <div class="quiz-progress">
+
+                <div
+                    style="width:${progresso}%">
+                </div>
+
+            </div>
+
+
+            <!-- PERGUNTA -->
+
+            <div class="question-box">
+
+                <p class="question-number">
+                    QUESTÃO ${numero}
+                </p>
+
+                <h2>
+                    ${questao.pergunta}
+                </h2>
+
+            </div>
+
+
+            <!-- ALTERNATIVAS -->
+
+            <div class="alternativas">
+
+                ${questao.alternativas
+                    .map((alternativa, index) => `
+
+                    <button
+                        class="alternativa"
+                        onclick="responder(${index})">
+
+                        <span>
+                            ${String.fromCharCode(97 + index)})
+                        </span>
+
+                        <strong>
+                            ${alternativa}
+                        </strong>
+
+                    </button>
+
+                `)
+                .join("")}
+
+            </div>
+
+
+            <!-- FEEDBACK -->
+
+            <div id="feedback"></div>
+
+
+        </div>
+    `;
+}
+
+
+// ==========================================
+// RESPONDER
+// ==========================================
+
+function responder(indiceEscolhido) {
+
+    const questao =
+        questoesAtuais[indiceQuestao];
+
+
+    const botoes =
+        document.querySelectorAll(".alternativa");
+
+
+    // Impede escolher mais de uma alternativa
+
+    botoes.forEach(botao => {
+
+        botao.disabled = true;
+
+    });
+
+
+    // Verificar resposta
+
+    const acertou =
+        indiceEscolhido === questao.correta;
+
+
+    if (acertou) {
+
+        pontuacao++;
+
+        botoes[indiceEscolhido]
+            .classList.add("certa");
+
+    } else {
+
+        botoes[indiceEscolhido]
+            .classList.add("errada");
+
+        botoes[questao.correta]
+            .classList.add("certa");
+
     }
 
-    .quiz-container h2 {
-        font-size: 19px;
+
+    // Feedback
+
+    const feedback =
+        document.getElementById("feedback");
+
+
+    if (acertou) {
+
+        feedback.innerHTML = `
+
+            <div class="feedback certo">
+
+                <strong>
+                    ✅ Resposta correta!
+                </strong>
+
+                <p>
+                    ${questao.explicacao}
+                </p>
+
+            </div>
+
+        `;
+
+    } else {
+
+        feedback.innerHTML = `
+
+            <div class="feedback errado">
+
+                <strong>
+                    ❌ Resposta incorreta.
+                </strong>
+
+                <p>
+                    <strong>
+                        Resposta correta:
+                    </strong>
+
+                    ${questao.alternativas[questao.correta]}
+                </p>
+
+                <p>
+                    ${questao.explicacao}
+                </p>
+
+            </div>
+
+        `;
     }
 
-    .alternativa {
-        min-height: 54px;
-        padding: 9px 12px;
-        font-size: 15px;
-        gap: 11px;
-    }
 
-    .alternativa span {
-        width: 27px;
-        height: 27px;
-        font-size: 12px;
+    // Botão seguinte
+
+    const ultimo =
+        indiceQuestao === questoesAtuais.length - 1;
+
+
+    feedback.innerHTML += `
+
+        <button
+            class="btn primary next-btn"
+            onclick="proximaQuestao()">
+
+            ${ultimo
+                ? "Ver resultado"
+                : "Próxima questão →"}
+
+        </button>
+
+    `;
+}
+
+
+// ==========================================
+// PRÓXIMA QUESTÃO
+// ==========================================
+
+function proximaQuestao() {
+
+    indiceQuestao++;
+
+
+    if (
+        indiceQuestao <
+        questoesAtuais.length
+    ) {
+
+        mostrarQuestao();
+
+    } else {
+
+        mostrarResultado();
+
     }
 }
+
+
+// ==========================================
+// RESULTADO
+// ==========================================
+
+function mostrarResultado() {
+
+    const total =
+        questoesAtuais.length;
+
+
+    const percentagem =
+        Math.round(
+            (pontuacao / total) * 100
+        );
+
+
+    let mensagem;
+
+
+    if (percentagem >= 90) {
+
+        mensagem =
+            "🏆 Excelente desempenho!";
+
+    } else if (percentagem >= 70) {
+
+        mensagem =
+            "👏 Muito bom desempenho!";
+
+    } else if (percentagem >= 50) {
+
+        mensagem =
+            "📚 Bom começo. Continue estudando!";
+
+    } else {
+
+        mensagem =
+            "💪 É preciso reforçar os conteúdos.";
+
+    }
+
+
+    quizArea.innerHTML = `
+
+        <div class="quiz-container resultado">
+
+            <div class="resultado-icon">
+                🎯
+            </div>
+
+
+            <h2>
+                Simulado concluído!
+            </h2>
+
+
+            <div class="pontuacao">
+                ${pontuacao}/${total}
+            </div>
+
+
+            <p class="percentagem">
+                ${percentagem}%
+            </p>
+
+
+            <h3>
+                ${mensagem}
+            </h3>
+
+
+            <div class="resultado-botoes">
+
+                <button
+                    class="btn primary"
+                    onclick="iniciarSimulado('Química')">
+
+                    🔄 Refazer simulado
+
+                </button>
+
+
+                <button
+                    class="btn secondary"
+                    onclick="fecharSimulado()">
+
+                    Voltar às categorias
+
+                </button>
+
+            </div>
+
+        </div>
+
+    `;
+}
+
+
+// ==========================================
+// FECHAR SIMULADO
+// ==========================================
+
+function fecharSimulado() {
+
+    quizArea.style.display = "none";
+
+
+    const categorias =
+        document.getElementById("categorias");
+
+
+    if (categorias) {
+
+        categorias.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+}
+
+
+// ==========================================
+// LIGAR CATEGORIAS
+// ==========================================
+
+document.querySelectorAll(".card")
+    .forEach(card => {
+
+        card.addEventListener(
+            "click",
+            () => {
+
+                const nome =
+                    card.querySelector("strong");
+
+
+                if (!nome) return;
+
+
+                const disciplina =
+                    nome.textContent.trim();
+
+
+                if (
+                    disciplina === "Química"
+                ) {
+
+                    iniciarSimulado(
+                        "Química"
+                    );
+
+                } else {
+
+                    alert(
+                        "📚 " +
+                        disciplina +
+                        "\n\n" +
+                        "Esta área será " +
+                        "adicionada ao banco " +
+                        "de questões nas próximas etapas."
+                    );
+
+                }
+
+            }
+        );
+
+    });
+
+
+// ==========================================
+// WWEBBA IA
+// ==========================================
+
+const iaBtn =
+    document.getElementById("iaBtn");
+
+
+if (iaBtn) {
+
+    iaBtn.addEventListener(
+        "click",
+        () => {
+
+            alert(
+                "🤖 Wwebba IA\n\n" +
+                "O módulo de Inteligência " +
+                "Artificial será integrado " +
+                "numa próxima etapa."
+            );
+
+        }
+    );
+
+}
+
+
+// ==========================================
+// SISTEMA INICIADO
+// ==========================================
+
+console.log(
+    "🔥 Wwebba Teste — sistema iniciado."
+);
