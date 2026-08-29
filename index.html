@@ -1,79 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Wwebba Teste — plataforma de estudos, simulados, revisão e assistência inteligente.">
-<meta name="theme-color" content="#0f172a">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Wwebba Teste</title>
-<link rel="stylesheet" href="style.css">
+<style>
+:root{--bg:#071321;--p:#0d1d2d;--p2:#10253a;--t:#eef5ff;--m:#9fb0c4;--a:#28a9ff;--b:#22384d;--g:#22c55e;--r:#ef4444}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:Arial,sans-serif;line-height:1.5}button,input,select,textarea{font:inherit}
+header{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:17px 5%;background:#071321f5;border-bottom:1px solid var(--b)}
+.logo{font-size:28px;font-weight:800}.logo span{color:var(--a)}nav{display:flex;gap:22px}nav a{color:white;text-decoration:none;font-weight:bold}.menu{display:none;background:none;border:0;color:white;font-size:30px}
+.hero{text-align:center;padding:75px 5%;background:radial-gradient(circle at top,#12324d,transparent 55%)}h1{font-size:clamp(42px,8vw,76px);margin:10px 0}.hero p{font-size:20px;color:var(--m);max-width:720px;margin:0 auto 25px}
+.btn{border:0;border-radius:12px;padding:13px 20px;font-weight:bold;cursor:pointer}.primary{background:var(--a);color:#04111d}.secondary{background:transparent;color:white;border:1px solid var(--b)}
+.actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.section{padding:65px 5%}.title{text-align:center;margin-bottom:30px}.title h2{font-size:38px;margin:8px}.muted{color:var(--m)}
+.search{max-width:760px;margin:0 auto 35px}.search input{width:100%;padding:17px;border-radius:16px;border:1px solid var(--b);background:var(--p);color:white}
+.category{max-width:1200px;margin:35px auto}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}.card{min-height:165px;text-align:left;padding:20px;border:1px solid var(--b);border-radius:18px;background:var(--p);color:white;cursor:pointer}.card:hover{border-color:var(--a);transform:translateY(-2px)}.card i{font-style:normal;font-size:34px}.card strong,.card small{display:block}.card small{color:var(--m);margin-top:7px}
+#quizArea{padding:20px 5% 70px}.box{max-width:900px;margin:auto;background:var(--p);border:1px solid var(--b);border-radius:20px;padding:25px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px}.choice,.content{padding:16px;text-align:left;border:1px solid var(--b);border-radius:13px;background:var(--p2);color:white;cursor:pointer}.choice:hover,.content:hover{border-color:var(--a)}.content{display:flex;gap:12px;align-items:center}.content small{display:block;color:var(--m)}select{width:100%;padding:13px;background:#071321;color:white;border:1px solid var(--b);border-radius:10px;margin:8px 0 15px}.top{display:flex;justify-content:space-between}.progress{height:8px;background:#172a3d;border-radius:9px;margin:18px 0}.progress div{height:100%;background:var(--a)}.question{padding:20px;border:1px solid var(--b);border-radius:14px}.answers{display:grid;gap:10px;margin:18px 0}.answer{padding:15px;text-align:left;border:1px solid var(--b);border-radius:12px;background:#0b1b2b;color:white}.correct{border-color:var(--g)!important;background:#22c55e14!important}.wrong{border-color:var(--r)!important;background:#ef444414!important}.feedback{padding:15px;border-radius:12px;margin:12px 0}.ok{border:1px solid var(--g);background:#22c55e12}.no{border:1px solid var(--r);background:#ef444412}.score{text-align:center;font-size:52px;color:var(--a);font-weight:800}.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:20px 0}.summary div{text-align:center;padding:14px;background:#0a1a29;border:1px solid var(--b);border-radius:12px}.summary b{display:block;font-size:21px}.review{display:grid;gap:12px}.review article{padding:15px;border:1px solid var(--b);border-radius:12px}.ia{padding:75px 5%;background:#081a2a;border-top:1px solid var(--b)}.ia>div{max-width:900px;margin:auto;text-align:center}.chat{text-align:left;background:var(--p);border:1px solid var(--b);border-radius:17px;padding:16px}.messages{height:280px;overflow:auto;display:grid;gap:9px}.msg{padding:11px 13px;background:#10263a;border-radius:13px;max-width:85%}.user{margin-left:auto;background:#0b4c73}.chatrow{display:flex;gap:8px;margin-top:12px}.chatrow textarea{flex:1;background:#071321;color:white;border:1px solid var(--b);border-radius:10px;padding:12px}.footer{text-align:center;padding:35px;color:var(--m);border-top:1px solid var(--b)}.hide{display:none}
+@media(max-width:700px){nav{display:none;position:absolute;top:67px;left:0;right:0;background:#071321;padding:15px 5%;flex-direction:column}.menu{display:block}nav.open{display:flex}.section{padding:50px 4%}.summary{grid-template-columns:1fr 1fr}.top{display:block}}
+</style>
 </head>
 <body>
-<header class="header">
-  <a class="logo" href="#inicio" aria-label="Wwebba Teste"><span>Wwebba</span> Teste</a>
-  <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">☰</button>
-  <nav id="mainNav">
-    <a href="#inicio">Início</a>
-    <a href="#categorias">Categorias</a>
-    <a href="#ia">Wwebba IA</a>
-    <button class="nav-btn" id="historicoBtn">📊 Histórico</button>
-  </nav>
-</header>
-
+<header><div class="logo"><span>Wwebba</span> Teste</div><button class="menu" id="menu">☰</button><nav id="nav"><a href="#inicio">Início</a><a href="#categorias">Categorias</a><a href="#ia">Wwebba IA</a></nav></header>
 <main>
-<section id="inicio" class="hero">
-  <div class="hero-content">
-    <div class="badge">🇦🇴 Educação • Ciências • Preparação para exames</div>
-    <h1>Aprenda. Pratique. <span>Domine.</span></h1>
-    <p>Simulados, revisão detalhada e assistência inteligente numa única plataforma.</p>
-    <div class="hero-buttons">
-      <a href="#categorias" class="btn primary">🚀 Começar a estudar</a>
-      <a href="#ia" class="btn secondary">🤖 Experimentar Wwebba IA</a>
-    </div>
-    <div class="trust-row">
-      <span>✓ Sem conta</span><span>✓ Funciona no celular</span><span>✓ Resultado detalhado</span>
-    </div>
-  </div>
-</section>
-
-<section id="categorias" class="section">
-  <div class="section-title">
-    <span class="eyebrow">BIBLIOTECA</span>
-    <h2>Escolha uma área</h2>
-    <p>Selecione uma disciplina, nível e conteúdo para iniciar.</p>
-  </div>
-  <div class="search-wrap">
-    <input id="buscaDisciplinas" type="search" placeholder="🔎 Pesquisar disciplina ou área...">
-  </div>
-  <div id="categoriasGrid" class="categories-grid"></div>
-</section>
-
-<section id="ia" class="ia-section">
-  <div class="ia-content">
-    <div class="ia-icon">🤖</div>
-    <span class="eyebrow">ASSISTENTE DE ESTUDO</span>
-    <h2>Wwebba IA</h2>
-    <p>Explique conceitos, resolva exercícios, gere questões e revise conteúdos. A versão offline usa uma base educacional local; a ligação a um modelo generativo real exige uma API/backend.</p>
-    <div class="ia-features">
-      <div>📖 <strong>Explicar conteúdos</strong></div>
-      <div>🧮 <strong>Resolver exercícios</strong></div>
-      <div>📝 <strong>Criar questões</strong></div>
-      <div>💡 <strong>Explicar erros</strong></div>
-      <div>🎯 <strong>Preparar exames</strong></div>
-    </div>
-    <button class="btn primary" id="iaBtn">Abrir Wwebba IA</button>
-  </div>
-</section>
-</main>
-
-<footer class="footer">
-  <div class="logo"><span>Wwebba</span> Teste</div>
-  <p>Plataforma de estudos, simulados e preparação académica.</p>
-  <p class="copyright">© 2026 Wwebba Teste</p>
-</footer>
-
-<div id="quizArea"></div>
-<div id="modalArea"></div>
+<section class="hero" id="inicio"><div class="muted">PLATAFORMA EDUCACIONAL</div><h1>Wwebba Teste</h1><p>Estude, pratique, faça simulados e compreenda os conceitos com explicações.</p><div class="actions"><a class="btn primary" href="#categorias">Começar a estudar</a><a class="btn secondary" href="#ia">Wwebba IA</a></div></section>
+<section class="section" id="categorias"><div class="title"><div class="muted">BIBLIOTECA</div><h2>Escolha uma área</h2><p class="muted">Selecione uma disciplina para começar.</p></div><div class="search"><input id="search" placeholder="🔎 Pesquisar disciplina ou área..."></div><div id="categories"></div></section>
+<section id="quizArea" class="hide"></section>
+<section class="ia" id="ia"><div><div style="font-size:55px">🤖</div><div class="muted">ASSISTENTE DE ESTUDO</div><h2>Wwebba IA</h2><p class="muted">Assistente local para explicações e orientação. Para uma IA generativa equivalente ao ChatGPT será necessária uma API/backend.</p><div class="chat"><div id="messages" class="messages"><div class="msg">Olá! Pergunte sobre Matemática, Física, Química, Biologia, Educação ou Angola.</div></div><div class="chatrow"><textarea id="iaInput" placeholder="Digite sua pergunta..."></textarea><button class="btn primary" id="send">Enviar</button></div></div></div></section>
+</main><footer class="footer"><div class="logo"><span>Wwebba</span> Teste</div><p>Plataforma de estudos e preparação académica.</p>© 2026</footer>
 <script src="app.js"></script>
-</body>
-</html>
+</body></html>
