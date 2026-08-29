@@ -1,22 +1,24 @@
-Wwebba Teste
-📚 Sobre o projeto
-O Wwebba Teste é uma plataforma de simulados online criada para ajudar estudantes a praticarem os seus conhecimentos através de questões e testes.
-🎯 Objetivo
-Oferecer uma forma simples e acessível de estudar, praticar e avaliar conhecimentos.
-🚀 Tecnologias utilizadas
-HTML5
-CSS3
-JavaScript
-📁 Estrutura do projeto
-Wwebba-Teste/
-├── index.html
-├── style.css
-├── app.js
-└── README.md
-🌐 Como utilizar
-Abra o arquivo index.html em um navegador ou publique o projeto através do GitHub Pages.
-✨ Funcionalidades
-O projeto está sendo desenvolvido para oferecer simulados interativos, permitindo que o utilizador responda questões e acompanhe o seu desempenho.
-📌 Projeto
-Nome: Wwebba Teste
-Este projeto está em desenvolvimento.
+Wwebba Teste — versão final gratuita
+O que foi integrado
+Página inicial profissional e responsiva.
+Todas as áreas presentes no projeto original.
+Seleção de nível e conteúdo.
+Configuração por quantidade e dificuldade.
+Simulados aleatórios.
+Correção imediata.
+Explicações.
+Resultado detalhado.
+Revisão questão por questão.
+Histórico local dos últimos 50 simulados.
+Pesquisa de disciplinas.
+Wwebba IA offline com explicações e alguns cálculos/temas.
+Banco de questões estruturado para expansão.
+Geradores de questões quantitativas de Matemática para aumentar a variedade.
+Como usar
+Coloque index.html, style.css e app.js na mesma pasta.
+Abra index.html no navegador.
+Não é necessária conta, servidor ou pagamento.
+Limitação importante da IA
+A Wwebba IA desta versão funciona localmente no navegador. Ela não é um modelo generativo do nível do ChatGPT. Para respostas abertas realmente avançadas será necessário ligar o site a um modelo de IA através de um backend/API. A chave de API não deve ser exposta diretamente no JavaScript do navegador.
+Sobre as questões
+O projeto usa questões-base e geradas por regras. Elas devem ser ampliadas e submetidas a revisão curricular/documental antes de serem apresentadas como banco oficial para exames. O sistema já guarda dificuldade e fonte para permitir essa curadoria.
