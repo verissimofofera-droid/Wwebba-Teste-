@@ -1,396 +1,232 @@
-// ==========================================
-// WWEBBA TESTE — MOTOR DE SIMULADOS
-// ==========================================
+/* ================================
+   ALTERNATIVAS DO SIMULADO
+   ================================ */
 
-// ---------- MENU MOBILE ----------
-
-const menuBtn = document.getElementById("menuBtn");
-const mainNav = document.getElementById("mainNav");
-
-if (menuBtn && mainNav) {
-    menuBtn.addEventListener("click", () => {
-        mainNav.classList.toggle("active");
-    });
+#quizArea {
+    padding: 70px 5%;
+    background: #f5f7fb;
 }
 
-document.querySelectorAll("#mainNav a").forEach(link => {
-    link.addEventListener("click", () => {
-        mainNav.classList.remove("active");
-    });
-});
+.quiz-container {
+    max-width: 850px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 35px;
+    border-radius: 18px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.08);
+}
+
+.quiz-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 15px;
+    color: #68758a;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.quiz-progress {
+    width: 100%;
+    height: 6px;
+    background: #e8edf4;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 30px;
+}
+
+.quiz-progress div {
+    height: 100%;
+    background: #1769e0;
+    transition: width 0.3s ease;
+}
+
+.quiz-container h2 {
+    font-size: 24px;
+    line-height: 1.5;
+    margin-bottom: 28px;
+}
 
 
-// ==========================================
-// BANCO DE QUESTÕES — PROTÓTIPO
-// ==========================================
+/* ALTERNATIVAS */
 
-const bancoQuestoes = {
+.alternativas {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
 
-    "Química": [
-        {
-            pergunta: "Qual é a unidade fundamental da matéria que conserva as propriedades de um elemento químico?",
-            alternativas: [
-                "Molécula",
-                "Átomo",
-                "Ião",
-                "Núcleo"
-            ],
-            correta: 1,
-            explicacao: "O átomo é a unidade fundamental de um elemento químico que conserva as suas propriedades químicas."
-        },
+.alternativa {
+    width: 100%;
+    min-height: 58px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
 
-        {
-            pergunta: "Qual é o número atómico do oxigénio?",
-            alternativas: [
-                "6",
-                "7",
-                "8",
-                "16"
-            ],
-            correta: 2,
-            explicacao: "O oxigénio possui 8 protões no núcleo. Portanto, o seu número atómico é Z = 8."
-        },
+    background: #ffffff;
+    border: 1px solid #dfe5ed;
+    border-radius: 10px;
 
-        {
-            pergunta: "Qual destas partículas possui carga elétrica negativa?",
-            alternativas: [
-                "Protão",
-                "Neutrão",
-                "Eletrão",
-                "Núcleo"
-            ],
-            correta: 2,
-            explicacao: "O eletrão possui carga elétrica negativa. O protão é positivo e o neutrão não possui carga elétrica."
-        },
+    color: #172033;
+    font-size: 16px;
+    text-align: left;
 
-        {
-            pergunta: "Qual é a fórmula química da água?",
-            alternativas: [
-                "CO₂",
-                "H₂O",
-                "O₂",
-                "H₂"
-            ],
-            correta: 1,
-            explicacao: "A água é constituída por dois átomos de hidrogénio e um átomo de oxigénio, formando H₂O."
-        },
-
-        {
-            pergunta: "Qual destas substâncias é um elemento químico?",
-            alternativas: [
-                "Água",
-                "Dióxido de carbono",
-                "Oxigénio",
-                "Cloreto de sódio"
-            ],
-            correta: 2,
-            explicacao: "O oxigénio (O₂) é uma substância simples constituída por apenas um elemento químico."
-        }
-    ]
-
-};
+    cursor: pointer;
+    transition: 0.2s ease;
+}
 
 
-// ==========================================
-// VARIÁVEIS DO SIMULADOR
-// ==========================================
+/* LETRAS A, B, C, D */
 
-let questoesAtuais = [];
-let questaoAtual = 0;
-let pontuacao = 0;
-let respostasDadas = [];
+.alternativa span {
+    flex-shrink: 0;
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #cbd3df;
+    border-radius: 50%;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    color: #536176;
+    background: #f8fafc;
+}
 
 
-// ==========================================
-// CRIAR ÁREA DO SIMULADOR
-// ==========================================
+/* PASSAR O MOUSE */
 
-const quizArea = document.createElement("section");
-
-quizArea.id = "quizArea";
-quizArea.style.display = "none";
-
-document.querySelector("main").appendChild(quizArea);
+.alternativa:hover:not(:disabled) {
+    border-color: #1769e0;
+    background: #f7faff;
+}
 
 
-// ==========================================
-// INICIAR SIMULADO
-// ==========================================
+/* RESPOSTA CORRETA */
 
-function iniciarSimulado(disciplina) {
+.alternativa.certa {
+    border-color: #20a464;
+    background: #edf9f2;
+}
 
-    if (!bancoQuestoes[disciplina]) {
-        alert("Este simulado ainda está em desenvolvimento.");
-        return;
+.alternativa.certa span {
+    border-color: #20a464;
+    color: #20a464;
+    background: #ffffff;
+}
+
+
+/* RESPOSTA ERRADA */
+
+.alternativa.errada {
+    border-color: #d64545;
+    background: #fff1f1;
+}
+
+.alternativa.errada span {
+    border-color: #d64545;
+    color: #d64545;
+    background: #ffffff;
+}
+
+
+/* DESATIVAR DEPOIS DA RESPOSTA */
+
+.alternativa:disabled {
+    cursor: default;
+}
+
+
+/* FEEDBACK */
+
+.feedback {
+    margin-top: 25px;
+    padding: 18px;
+    border-radius: 12px;
+    line-height: 1.6;
+}
+
+.feedback.certo {
+    background: #edf9f2;
+    border: 1px solid #bde8ce;
+}
+
+.feedback.errado {
+    background: #fff1f1;
+    border: 1px solid #f0c2c2;
+}
+
+.feedback strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+
+/* BOTÃO PRÓXIMA */
+
+.next-btn {
+    margin-top: 20px;
+}
+
+
+/* RESULTADO */
+
+.resultado {
+    text-align: center;
+}
+
+.resultado-icon {
+    font-size: 55px;
+    margin-bottom: 10px;
+}
+
+.pontuacao {
+    font-size: 55px;
+    font-weight: 800;
+    color: #1769e0;
+    margin: 15px 0 0;
+}
+
+.percentagem {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+
+/* CELULAR */
+
+@media (max-width: 600px) {
+
+    #quizArea {
+        padding: 45px 4%;
     }
 
-    questoesAtuais = bancoQuestoes[disciplina];
-
-    questaoAtual = 0;
-    pontuacao = 0;
-    respostasDadas = [];
-
-    quizArea.style.display = "block";
-
-    mostrarQuestao();
-
-    quizArea.scrollIntoView({
-        behavior: "smooth"
-    });
-}
-
-
-// ==========================================
-// MOSTRAR QUESTÃO
-// ==========================================
-
-function mostrarQuestao() {
-
-    const questao = questoesAtuais[questaoAtual];
-
-    quizArea.innerHTML = `
-        <div class="quiz-container">
-
-            <div class="quiz-header">
-                <span>
-                    Questão ${questaoAtual + 1}
-                    de ${questoesAtuais.length}
-                </span>
-
-                <span>
-                    Pontos: ${pontuacao}
-                </span>
-            </div>
-
-            <div class="quiz-progress">
-                <div style="width:${((questaoAtual + 1) / questoesAtuais.length) * 100}%"></div>
-            </div>
-
-            <h2>${questao.pergunta}</h2>
-
-            <div class="alternativas">
-
-                ${questao.alternativas.map((alternativa, index) => `
-                    <button
-                        class="alternativa"
-                        onclick="responder(${index})">
-                        <span>${String.fromCharCode(65 + index)}</span>
-                        ${alternativa}
-                    </button>
-                `).join("")}
-
-            </div>
-
-            <div id="feedback"></div>
-
-        </div>
-    `;
-}
-
-
-// ==========================================
-// RESPONDER QUESTÃO
-// ==========================================
-
-function responder(indiceEscolhido) {
-
-    const questao = questoesAtuais[questaoAtual];
-
-    const botoes = document.querySelectorAll(".alternativa");
-
-    botoes.forEach(botao => {
-        botao.disabled = true;
-    });
-
-    const feedback = document.getElementById("feedback");
-
-    respostasDadas.push({
-        questao: questaoAtual,
-        escolhida: indiceEscolhido,
-        correta: questao.correta
-    });
-
-    if (indiceEscolhido === questao.correta) {
-
-        pontuacao++;
-
-        botoes[indiceEscolhido].classList.add("certa");
-
-        feedback.innerHTML = `
-            <div class="feedback certo">
-                <strong>✅ Resposta correta!</strong>
-                <p>${questao.explicacao}</p>
-            </div>
-        `;
-
-    } else {
-
-        botoes[indiceEscolhido].classList.add("errada");
-        botoes[questao.correta].classList.add("certa");
-
-        feedback.innerHTML = `
-            <div class="feedback errado">
-                <strong>❌ Resposta incorreta.</strong>
-                <p><strong>Resposta correta:</strong>
-                ${questao.alternativas[questao.correta]}</p>
-                <p>${questao.explicacao}</p>
-            </div>
-        `;
+    .quiz-container {
+        padding: 22px 16px;
+        border-radius: 14px;
     }
 
-
-    const textoBotao =
-        questaoAtual < questoesAtuais.length - 1
-        ? "Próxima questão →"
-        : "Ver resultado";
-
-    feedback.innerHTML += `
-        <button
-            class="btn primary next-btn"
-            onclick="proximaQuestao()">
-            ${textoBotao}
-        </button>
-    `;
-}
-
-
-// ==========================================
-// PRÓXIMA QUESTÃO
-// ==========================================
-
-function proximaQuestao() {
-
-    questaoAtual++;
-
-    if (questaoAtual < questoesAtuais.length) {
-        mostrarQuestao();
-    } else {
-        mostrarResultado();
-    }
-}
-
-
-// ==========================================
-// RESULTADO
-// ==========================================
-
-function mostrarResultado() {
-
-    const total = questoesAtuais.length;
-
-    const percentagem =
-        Math.round((pontuacao / total) * 100);
-
-    let mensagem;
-
-    if (percentagem >= 90) {
-        mensagem = "🏆 Excelente desempenho!";
-    } else if (percentagem >= 70) {
-        mensagem = "👏 Muito bom desempenho!";
-    } else if (percentagem >= 50) {
-        mensagem = "📚 Bom começo. Continue estudando!";
-    } else {
-        mensagem = "💪 É preciso reforçar os conteúdos.";
+    .quiz-container h2 {
+        font-size: 19px;
     }
 
-    quizArea.innerHTML = `
-        <div class="quiz-container resultado">
+    .alternativa {
+        min-height: 54px;
+        padding: 9px 12px;
+        font-size: 15px;
+        gap: 11px;
+    }
 
-            <div class="resultado-icon">🎯</div>
-
-            <h2>Simulado concluído!</h2>
-
-            <div class="pontuacao">
-                ${pontuacao}/${total}
-            </div>
-
-            <p class="percentagem">
-                ${percentagem}%
-            </p>
-
-            <h3>${mensagem}</h3>
-
-            <button
-                class="btn primary"
-                onclick="iniciarSimulado('Química')">
-                🔄 Refazer simulado
-            </button>
-
-            <button
-                class="btn secondary"
-                onclick="fecharSimulado()">
-                Voltar às categorias
-            </button>
-
-        </div>
-    `;
+    .alternativa span {
+        width: 27px;
+        height: 27px;
+        font-size: 12px;
+    }
 }
-
-
-// ==========================================
-// FECHAR SIMULADO
-// ==========================================
-
-function fecharSimulado() {
-
-    quizArea.style.display = "none";
-
-    document.getElementById("categorias")
-        ?.scrollIntoView({
-            behavior: "smooth"
-        });
-}
-
-
-// ==========================================
-// LIGAR OS CARTÕES ÀS DISCIPLINAS
-// ==========================================
-
-document.querySelectorAll(".card").forEach(card => {
-
-    card.addEventListener("click", () => {
-
-        const nome = card.querySelector("strong");
-
-        if (!nome) return;
-
-        const disciplina = nome.textContent.trim();
-
-        if (disciplina === "Química") {
-
-            iniciarSimulado("Química");
-
-        } else {
-
-            alert(
-                "📚 " + disciplina +
-                "\n\nEste banco de questões será desenvolvido nas próximas etapas."
-            );
-        }
-    });
-
-});
-
-
-// ==========================================
-// WWEBBA IA — FUTURA INTEGRAÇÃO
-// ==========================================
-
-const iaBtn = document.getElementById("iaBtn");
-
-if (iaBtn) {
-
-    iaBtn.addEventListener("click", () => {
-
-        alert(
-            "🤖 Wwebba IA\n\n" +
-            "O módulo de Inteligência Artificial será integrado " +
-            "numa próxima etapa."
-        );
-
-    });
-
-}
-
-
-console.log("Wwebba Teste — sistema iniciado.");
