@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wwebba Teste - Plataforma de estudos, simulados e preparação académica.">
     <title>Wwebba Teste</title>
 
     <link rel="stylesheet" href="style.css">
@@ -10,62 +11,244 @@
 
 <body>
 
-    <header>
-        <h1>Wwebba Teste</h1>
-        <p>Aprenda, pratique e teste os seus conhecimentos.</p>
+    <!-- CABEÇALHO -->
+    <header class="header">
+        <div class="logo">
+            <span>Wwebba</span> Teste
+        </div>
+
+        <button class="menu-btn" id="menuBtn" aria-label="Abrir menu">
+            ☰
+        </button>
+
+        <nav id="mainNav">
+            <a href="#inicio">Início</a>
+            <a href="#categorias">Categorias</a>
+            <a href="#ia">Wwebba IA</a>
+        </nav>
     </header>
 
+
+    <!-- PÁGINA INICIAL -->
     <main>
-        <section id="inicio">
-            <h2>Bem-vindo ao Wwebba Teste!</h2>
 
-            <p>Escolha uma disciplina para começar:</p>
+        <section id="inicio" class="hero">
+            <div class="hero-content">
+                <h1>Wwebba Teste</h1>
 
-            <div class="disciplinas">
-                <button onclick="iniciarTeste('Química')">
-                    🧪 Química
-                </button>
+                <p>
+                    Plataforma de estudos, simulados e preparação académica.
+                </p>
 
-                <button onclick="iniciarTeste('Português')">
-                    📚 Língua Portuguesa
-                </button>
+                <div class="hero-buttons">
+                    <a href="#categorias" class="btn primary">
+                        Começar a estudar
+                    </a>
 
-                <button onclick="iniciarTeste('Matemática')">
-                    📐 Matemática
-                </button>
-
-                <button onclick="iniciarTeste('Biologia')">
-                    🧬 Biologia
-                </button>
+                    <a href="#ia" class="btn secondary">
+                        Conhecer Wwebba IA
+                    </a>
+                </div>
             </div>
         </section>
 
-        <section id="teste" class="oculto">
-            <h2 id="tituloTeste"></h2>
 
-            <div id="questao"></div>
+        <!-- CATEGORIAS -->
+        <section id="categorias" class="section">
 
-            <div id="opcoes"></div>
+            <div class="section-title">
+                <h2>Categorias de estudo</h2>
+                <p>Escolha uma área para começar.</p>
+            </div>
 
-            <button id="proxima" onclick="proximaQuestao()">
-                Próxima questão
-            </button>
+
+            <!-- CONHECIMENTOS DE ANGOLA -->
+            <div class="category">
+                <h3>🇦🇴 Conhecimentos de Angola</h3>
+
+                <div class="cards">
+
+                    <button class="card">
+                        <span>📜</span>
+                        <strong>História de Angola</strong>
+                        <small>Estude os principais acontecimentos históricos.</small>
+                    </button>
+
+                    <button class="card">
+                        <span>🏛️</span>
+                        <strong>Organização política e administrativa</strong>
+                        <small>Conheça a organização do Estado e do território.</small>
+                    </button>
+
+                    <button class="card">
+                        <span>📋</span>
+                        <strong>Administração Pública</strong>
+                        <small>Conteúdos fundamentais para preparação académica e profissional.</small>
+                    </button>
+
+                    <button class="card">
+                        <span>🛡️</span>
+                        <strong>Ministério do Interior</strong>
+                        <small>Conhecimentos relacionados com a área.</small>
+                    </button>
+
+                    <button class="card">
+                        <span>🇦🇴</span>
+                        <strong>Patriotismo e cidadania</strong>
+                        <small>Direitos, deveres, cidadania e valores nacionais.</small>
+                    </button>
+
+                </div>
+            </div>
+
+
+            <!-- EDUCAÇÃO -->
+            <div class="category">
+                <h3>👨🏾‍🏫 Educação</h3>
+
+                <div class="cards">
+
+                    <button class="card">
+                        <span>📚</span>
+                        <strong>Didática Geral</strong>
+                        <small>Fundamentos e processos de ensino e aprendizagem.</small>
+                    </button>
+
+                    <button class="card">
+                        <span>👨🏾‍🏫</span>
+                        <strong>Metodologia de Ensino</strong>
+                        <small>Métodos e estratégias de ensino.</small>
+                    </button>
+
+                    <button class="card">
+                        <span>⚗️</span>
+                        <strong>Didática de Química</strong>
+                        <small>Ensino e aprendizagem da Química.</small>
+                    </button>
+
+                    <button class="card">
+                        <span>🎓</span>
+                        <strong>Pedagogia</strong>
+                        <small>Fundamentos da educação e formação humana.</small>
+                    </button>
+
+                    <button class="card">
+                        <span>✅</span>
+                        <strong>Avaliação da aprendizagem</strong>
+                        <small>Princípios, métodos e instrumentos de avaliação.</small>
+                    </button>
+
+                </div>
+            </div>
+
+
+            <!-- CIÊNCIAS -->
+            <div class="category">
+                <h3>🔬 Ciências</h3>
+
+                <div class="cards">
+
+                    <button class="card">
+                        <span>➗</span>
+                        <strong>Matemática</strong>
+                        <small>7.ª classe → Universidade</small>
+                    </button>
+
+                    <button class="card">
+                        <span>⚡</span>
+                        <strong>Física</strong>
+                        <small>7.ª classe → Universidade</small>
+                    </button>
+
+                    <button class="card">
+                        <span>⚗️</span>
+                        <strong>Química</strong>
+                        <small>7.ª classe → Universidade</small>
+                    </button>
+
+                    <button class="card">
+                        <span>🧬</span>
+                        <strong>Biologia</strong>
+                        <small>7.ª classe → Universidade</small>
+                    </button>
+
+                </div>
+            </div>
+
         </section>
 
-        <section id="resultado" class="oculto">
-            <h2>Resultado</h2>
 
-            <p id="pontuacao"></p>
+        <!-- WWEBBA IA -->
+        <section id="ia" class="ia-section">
 
-            <button onclick="voltarInicio()">
-                🔄 Fazer outro teste
-            </button>
+            <div class="ia-content">
+
+                <div class="ia-icon">🤖</div>
+
+                <h2>Wwebba IA</h2>
+
+                <p>
+                    Um assistente inteligente para ajudar nos estudos,
+                    exercícios e preparação para exames.
+                </p>
+
+                <div class="ia-features">
+
+                    <div>
+                        <span>📖</span>
+                        <strong>Explicar conteúdos</strong>
+                    </div>
+
+                    <div>
+                        <span>📝</span>
+                        <strong>Criar exercícios</strong>
+                    </div>
+
+                    <div>
+                        <span>✔️</span>
+                        <strong>Corrigir respostas</strong>
+                    </div>
+
+                    <div>
+                        <span>💡</span>
+                        <strong>Explicar erros</strong>
+                    </div>
+
+                    <div>
+                        <span>🎯</span>
+                        <strong>Ajudar na preparação para exames</strong>
+                    </div>
+
+                </div>
+
+                <button class="btn primary" id="iaBtn">
+                    Experimentar Wwebba IA
+                </button>
+
+            </div>
+
         </section>
+
     </main>
 
-    <footer>
-        <p>© 2026 Wwebba Teste</p>
+
+    <!-- RODAPÉ -->
+    <footer class="footer">
+
+        <div class="logo">
+            <span>Wwebba</span> Teste
+        </div>
+
+        <p>
+            Plataforma de estudos, simulados e preparação académica.
+        </p>
+
+        <p class="copyright">
+            © 2026 Wwebba Teste. Todos os direitos reservados.
+        </p>
+
     </footer>
+
 
     <script src="app.js"></script>
 
