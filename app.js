@@ -1,11 +1,6 @@
 // ==========================================
-// WWEBBA TESTE — APP.JS
-// MOTOR DE SIMULADOS
-// ==========================================
-
-
-// ==========================================
-// MENU MOBILE
+// WWEBBA TESTE — VERSÃO 3
+// SELEÇÃO DE CONTEÚDO + CONFIGURAÇÃO
 // ==========================================
 
 const menuBtn = document.getElementById("menuBtn");
@@ -25,167 +20,137 @@ document.querySelectorAll("#mainNav a").forEach(link => {
 
 
 // ==========================================
-// BANCO DE QUESTÕES — PRIMEIRO TESTE
+// BANCO DE QUESTÕES
 // ==========================================
 
 const bancoQuestoes = {
 
-    "Química": [
+    "Química": {
 
-        {
-            pergunta: "Qual é o número atómico do oxigénio?",
+        "7.ª Classe": {
 
-            alternativas: [
-                "6",
-                "7",
-                "8",
-                "16"
+            "Introdução à Química": [
+
+                {
+                    pergunta:
+                        "Qual é o objeto fundamental de estudo da Química?",
+
+                    alternativas: [
+                        "Apenas os seres vivos",
+                        "A matéria, suas propriedades e transformações",
+                        "Somente os astros",
+                        "Apenas os movimentos dos corpos"
+                    ],
+
+                    correta: 1,
+
+                    explicacao:
+                        "A Química estuda a matéria, suas propriedades, " +
+                        "composição, estrutura e as transformações que ela sofre."
+                },
+
+                {
+                    pergunta:
+                        "Qual das opções representa uma propriedade da matéria?",
+
+                    alternativas: [
+                        "Massa",
+                        "Democracia",
+                        "Velocidade da luz",
+                        "Temperatura do Sol"
+                    ],
+
+                    correta: 0,
+
+                    explicacao:
+                        "A massa é uma propriedade geral da matéria."
+                }
+
             ],
 
-            correta: 2,
 
-            explicacao:
-                "O oxigénio possui 8 protões no núcleo. " +
-                "Por isso, o seu número atómico é 8."
-        },
+            "Matéria e suas propriedades": [
 
+                {
+                    pergunta:
+                        "Qual estado físico possui volume definido, mas assume a forma do recipiente?",
 
-        {
-            pergunta:
-                "Qual destas partículas possui carga elétrica negativa?",
+                    alternativas: [
+                        "Sólido",
+                        "Líquido",
+                        "Gasoso",
+                        "Plasma"
+                    ],
 
-            alternativas: [
-                "Protão",
-                "Neutrão",
-                "Eletrão",
-                "Núcleo"
-            ],
+                    correta: 1,
 
-            correta: 2,
+                    explicacao:
+                        "Os líquidos possuem volume definido, mas não possuem forma própria."
+                },
 
-            explicacao:
-                "O eletrão possui carga elétrica negativa. " +
-                "O protão possui carga positiva e o neutrão é eletricamente neutro."
-        },
+                {
+                    pergunta:
+                        "Em qual estado físico as partículas apresentam maior liberdade de movimento?",
 
+                    alternativas: [
+                        "Sólido",
+                        "Líquido",
+                        "Gasoso",
+                        "Sólido e líquido"
+                    ],
 
-        {
-            pergunta:
-                "Qual é a fórmula química da água?",
+                    correta: 2,
 
-            alternativas: [
-                "CO₂",
-                "H₂O",
-                "O₂",
-                "H₂"
-            ],
+                    explicacao:
+                        "No estado gasoso, as partículas encontram-se mais afastadas " +
+                        "e apresentam maior liberdade de movimento."
+                }
 
-            correta: 1,
+            ]
 
-            explicacao:
-                "A molécula de água é constituída por dois átomos " +
-                "de hidrogénio e um átomo de oxigénio: H₂O."
-        },
-
-
-        {
-            pergunta:
-                "Qual destas substâncias é formada por apenas um elemento químico?",
-
-            alternativas: [
-                "Água",
-                "Dióxido de carbono",
-                "Oxigénio",
-                "Cloreto de sódio"
-            ],
-
-            correta: 2,
-
-            explicacao:
-                "O oxigénio molecular, O₂, é uma substância simples, " +
-                "pois é constituído apenas por átomos de oxigénio."
-        },
-
-
-        {
-            pergunta:
-                "Qual das seguintes partículas se encontra no núcleo do átomo?",
-
-            alternativas: [
-                "Eletrão",
-                "Protão",
-                "Eletrão livre",
-                "Fotão"
-            ],
-
-            correta: 1,
-
-            explicacao:
-                "O núcleo atómico é constituído principalmente por protões " +
-                "e neutrões. Os eletrões encontram-se na eletrosfera."
         }
 
-    ]
+    }
 
 };
 
 
 // ==========================================
-// ESTADO DO SIMULADO
+// ESTADO
 // ==========================================
+
+let disciplinaAtual = "";
+let nivelAtual = "";
+let conteudoAtual = "";
 
 let questoesAtuais = [];
-
 let indiceQuestao = 0;
-
 let pontuacao = 0;
-
-let simuladoIniciado = false;
 
 
 // ==========================================
-// CRIAR ÁREA DO SIMULADO
+// ÁREA DO SISTEMA
 // ==========================================
 
 const quizArea = document.createElement("section");
 
 quizArea.id = "quizArea";
-
 quizArea.style.display = "none";
 
 document.querySelector("main").appendChild(quizArea);
 
 
 // ==========================================
-// INICIAR SIMULADO
+// DISCIPLINA
 // ==========================================
 
-function iniciarSimulado(disciplina) {
+function selecionarDisciplina(disciplina) {
 
-    if (!bancoQuestoes[disciplina]) {
-
-        alert(
-            "Este simulado ainda está em desenvolvimento."
-        );
-
-        return;
-    }
-
-
-    questoesAtuais = bancoQuestoes[disciplina];
-
-    indiceQuestao = 0;
-
-    pontuacao = 0;
-
-    simuladoIniciado = true;
-
+    disciplinaAtual = disciplina;
 
     quizArea.style.display = "block";
 
-
-    mostrarQuestao();
-
+    mostrarNiveis();
 
     quizArea.scrollIntoView({
         behavior: "smooth"
@@ -194,7 +159,394 @@ function iniciarSimulado(disciplina) {
 
 
 // ==========================================
-// MOSTRAR QUESTÃO
+// NÍVEIS
+// ==========================================
+
+function mostrarNiveis() {
+
+    const niveis = [
+        "7.ª Classe",
+        "8.ª Classe",
+        "9.ª Classe",
+        "10.ª Classe",
+        "11.ª Classe",
+        "12.ª Classe",
+        "Universidade"
+    ];
+
+    quizArea.innerHTML = `
+
+        <div class="quiz-container selection-container">
+
+            <div class="selection-icon">📚</div>
+
+            <span class="quiz-label">
+                WWEBBA TESTE
+            </span>
+
+            <h2>
+                ${disciplinaAtual}
+            </h2>
+
+            <p class="selection-description">
+                Escolha o seu nível de estudo.
+            </p>
+
+            <div class="nivel-grid">
+
+                ${niveis.map(nivel => `
+
+                    <button
+                        class="nivel-btn"
+                        onclick="selecionarNivel('${nivel}')">
+
+                        <span class="nivel-icon">
+                            🎓
+                        </span>
+
+                        <span>
+                            ${nivel}
+                        </span>
+
+                        <small>
+                            Ver conteúdos
+                        </small>
+
+                    </button>
+
+                `).join("")}
+
+            </div>
+
+            <button
+                class="btn secondary"
+                onclick="fecharSelecao()">
+
+                ← Voltar
+
+            </button>
+
+        </div>
+    `;
+}
+
+
+// ==========================================
+// NÍVEL SELECIONADO
+// ==========================================
+
+function selecionarNivel(nivel) {
+
+    nivelAtual = nivel;
+
+    mostrarConteudos();
+
+}
+
+
+// ==========================================
+// CONTEÚDOS
+// ==========================================
+
+function mostrarConteudos() {
+
+    const dados =
+        bancoQuestoes[disciplinaAtual]?.[nivelAtual];
+
+
+    if (!dados) {
+
+        quizArea.innerHTML = `
+
+            <div class="quiz-container selection-container">
+
+                <div class="selection-icon">
+                    🚧
+                </div>
+
+                <span class="quiz-label">
+                    ${disciplinaAtual}
+                </span>
+
+                <h2>
+                    ${nivelAtual}
+                </h2>
+
+                <p class="selection-description">
+                    Os conteúdos deste nível
+                    ainda estão sendo preparados.
+                </p>
+
+                <button
+                    class="btn secondary"
+                    onclick="mostrarNiveis()">
+
+                    ← Escolher outro nível
+
+                </button>
+
+            </div>
+        `;
+
+        return;
+    }
+
+
+    const conteudos =
+        Object.keys(dados);
+
+
+    quizArea.innerHTML = `
+
+        <div class="quiz-container selection-container">
+
+            <div class="selection-icon">
+                📖
+            </div>
+
+            <span class="quiz-label">
+                ${disciplinaAtual}
+            </span>
+
+            <h2>
+                ${nivelAtual}
+            </h2>
+
+            <p class="selection-description">
+                Escolha o conteúdo que deseja estudar.
+            </p>
+
+
+            <div class="conteudo-list">
+
+                ${conteudos.map(conteudo => `
+
+                    <button
+                        class="conteudo-item"
+                        onclick="selecionarConteudo('${conteudo}')">
+
+                        <div class="conteudo-item-icon">
+                            📘
+                        </div>
+
+                        <div class="conteudo-item-text">
+
+                            <strong>
+                                ${conteudo}
+                            </strong>
+
+                            <small>
+                                ${dados[conteudo].length}
+                                questões disponíveis
+                            </small>
+
+                        </div>
+
+                        <span class="arrow">
+                            →
+                        </span>
+
+                    </button>
+
+                `).join("")}
+
+            </div>
+
+
+            <button
+                class="btn secondary"
+                onclick="mostrarNiveis()">
+
+                ← Voltar
+
+            </button>
+
+        </div>
+    `;
+}
+
+
+// ==========================================
+// CONTEÚDO SELECIONADO
+// ==========================================
+
+function selecionarConteudo(conteudo) {
+
+    conteudoAtual = conteudo;
+
+    mostrarConfiguracao();
+
+}
+
+
+// ==========================================
+// CONFIGURAÇÃO DO SIMULADO
+// ==========================================
+
+function mostrarConfiguracao() {
+
+    const quantidadeDisponivel =
+        bancoQuestoes[disciplinaAtual]
+        [nivelAtual]
+        [conteudoAtual]
+        .length;
+
+
+    quizArea.innerHTML = `
+
+        <div class="quiz-container selection-container">
+
+            <div class="selection-icon">
+                ⚙️
+            </div>
+
+            <span class="quiz-label">
+                CONFIGURAR SIMULADO
+            </span>
+
+            <h2>
+                ${conteudoAtual}
+            </h2>
+
+            <p class="selection-description">
+                ${disciplinaAtual} · ${nivelAtual}
+            </p>
+
+
+            <div class="config-box">
+
+                <label>
+                    Número de questões
+                </label>
+
+                <select id="quantidadeQuestoes">
+
+                    ${[5, 10, 15, 20]
+                        .filter(numero => numero <= quantidadeDisponivel)
+                        .map(numero => `
+                            <option value="${numero}">
+                                ${numero} questões
+                            </option>
+                        `)
+                        .join("")}
+
+                    ${quantidadeDisponivel < 5
+                        ? `
+                            <option value="${quantidadeDisponivel}">
+                                ${quantidadeDisponivel} questões
+                            </option>
+                          `
+                        : ""}
+
+                </select>
+
+
+                <label>
+                    Nível de dificuldade
+                </label>
+
+                <select id="dificuldade">
+
+                    <option value="todas">
+                        Todas as dificuldades
+                    </option>
+
+                    <option value="facil">
+                        Fácil
+                    </option>
+
+                    <option value="medio">
+                        Médio
+                    </option>
+
+                    <option value="dificil">
+                        Difícil
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                class="btn primary iniciar-btn"
+                onclick="iniciarSimulado()">
+
+                🚀 Iniciar simulado
+
+            </button>
+
+
+            <button
+                class="btn secondary"
+                onclick="mostrarConteudos()">
+
+                ← Voltar
+
+            </button>
+
+        </div>
+
+    `;
+}
+
+
+// ==========================================
+// INICIAR SIMULADO
+// ==========================================
+
+function iniciarSimulado() {
+
+    const quantidade =
+        Number(
+            document.getElementById("quantidadeQuestoes")?.value
+        ) || 0;
+
+
+    const banco =
+        bancoQuestoes
+        [disciplinaAtual]
+        [nivelAtual]
+        [conteudoAtual];
+
+
+    if (!banco || banco.length === 0) {
+
+        alert(
+            "Não existem questões disponíveis."
+        );
+
+        return;
+    }
+
+
+    // Embaralhar questões
+
+    const embaralhadas =
+        [...banco].sort(
+            () => Math.random() - 0.5
+        );
+
+
+    questoesAtuais =
+        embaralhadas.slice(
+            0,
+            Math.min(quantidade, banco.length)
+        );
+
+
+    indiceQuestao = 0;
+
+    pontuacao = 0;
+
+
+    mostrarQuestao();
+
+}
+
+
+// ==========================================
+// QUESTÃO
 // ==========================================
 
 function mostrarQuestao() {
@@ -219,15 +571,12 @@ function mostrarQuestao() {
 
         <div class="quiz-container">
 
-
-            <!-- CABEÇALHO -->
-
             <div class="quiz-top">
 
                 <div>
 
                     <span class="quiz-label">
-                        SIMULADO DE QUÍMICA
+                        ${disciplinaAtual.toUpperCase()}
                     </span>
 
                     <h3>
@@ -239,32 +588,23 @@ function mostrarQuestao() {
 
 
                 <div class="quiz-score">
-
-                    ${pontuacao}
-                    ponto${pontuacao !== 1 ? "s" : ""}
-
+                    ${pontuacao} ponto${pontuacao !== 1 ? "s" : ""}
                 </div>
 
             </div>
 
-
-            <!-- PROGRESSO -->
 
             <div class="quiz-progress">
 
-                <div
-                    style="width:${progresso}%">
-                </div>
+                <div style="width:${progresso}%"></div>
 
             </div>
 
-
-            <!-- PERGUNTA -->
 
             <div class="question-box">
 
                 <p class="question-number">
-                    QUESTÃO ${numero}
+                    ${nivelAtual} · ${conteudoAtual}
                 </p>
 
                 <h2>
@@ -273,8 +613,6 @@ function mostrarQuestao() {
 
             </div>
 
-
-            <!-- ALTERNATIVAS -->
 
             <div class="alternativas">
 
@@ -295,24 +633,21 @@ function mostrarQuestao() {
 
                     </button>
 
-                `)
-                .join("")}
+                `).join("")}
 
             </div>
 
 
-            <!-- FEEDBACK -->
-
             <div id="feedback"></div>
 
-
         </div>
+
     `;
 }
 
 
 // ==========================================
-// RESPONDER
+// RESPOSTA
 // ==========================================
 
 function responder(indiceEscolhido) {
@@ -325,16 +660,10 @@ function responder(indiceEscolhido) {
         document.querySelectorAll(".alternativa");
 
 
-    // Impede escolher mais de uma alternativa
-
     botoes.forEach(botao => {
-
         botao.disabled = true;
-
     });
 
-
-    // Verificar resposta
 
     const acertou =
         indiceEscolhido === questao.correta;
@@ -358,73 +687,44 @@ function responder(indiceEscolhido) {
     }
 
 
-    // Feedback
-
     const feedback =
         document.getElementById("feedback");
 
 
-    if (acertou) {
+    feedback.innerHTML = `
 
-        feedback.innerHTML = `
+        <div class="feedback ${acertou ? "certo" : "errado"}">
 
-            <div class="feedback certo">
+            <strong>
+                ${acertou
+                    ? "✅ Resposta correta!"
+                    : "❌ Resposta incorreta!"}
+            </strong>
 
-                <strong>
-                    ✅ Resposta correta!
-                </strong>
+            <p>
+                ${
+                    acertou
+                    ? questao.explicacao
+                    : "Resposta correta: " +
+                      questao.alternativas[questao.correta] +
+                      "<br><br>" +
+                      questao.explicacao
+                }
+            </p>
 
-                <p>
-                    ${questao.explicacao}
-                </p>
+        </div>
 
-            </div>
-
-        `;
-
-    } else {
-
-        feedback.innerHTML = `
-
-            <div class="feedback errado">
-
-                <strong>
-                    ❌ Resposta incorreta.
-                </strong>
-
-                <p>
-                    <strong>
-                        Resposta correta:
-                    </strong>
-
-                    ${questao.alternativas[questao.correta]}
-                </p>
-
-                <p>
-                    ${questao.explicacao}
-                </p>
-
-            </div>
-
-        `;
-    }
-
-
-    // Botão seguinte
-
-    const ultimo =
-        indiceQuestao === questoesAtuais.length - 1;
-
-
-    feedback.innerHTML += `
 
         <button
             class="btn primary next-btn"
             onclick="proximaQuestao()">
 
-            ${ultimo
-                ? "Ver resultado"
-                : "Próxima questão →"}
+            ${
+                indiceQuestao <
+                questoesAtuais.length - 1
+                ? "Próxima questão →"
+                : "Ver resultado"
+            }
 
         </button>
 
@@ -453,6 +753,7 @@ function proximaQuestao() {
         mostrarResultado();
 
     }
+
 }
 
 
@@ -477,23 +778,19 @@ function mostrarResultado() {
 
     if (percentagem >= 90) {
 
-        mensagem =
-            "🏆 Excelente desempenho!";
+        mensagem = "🏆 Excelente desempenho!";
 
     } else if (percentagem >= 70) {
 
-        mensagem =
-            "👏 Muito bom desempenho!";
+        mensagem = "👏 Muito bom desempenho!";
 
     } else if (percentagem >= 50) {
 
-        mensagem =
-            "📚 Bom começo. Continue estudando!";
+        mensagem = "📚 Bom desempenho. Continue praticando!";
 
     } else {
 
-        mensagem =
-            "💪 É preciso reforçar os conteúdos.";
+        mensagem = "💪 Continue estudando. Você consegue!";
 
     }
 
@@ -503,50 +800,46 @@ function mostrarResultado() {
         <div class="quiz-container resultado">
 
             <div class="resultado-icon">
-                🎯
+                🏆
             </div>
 
+            <span class="quiz-label">
+                RESULTADO FINAL
+            </span>
 
             <h2>
-                Simulado concluído!
+                Simulado concluído
             </h2>
-
 
             <div class="pontuacao">
                 ${pontuacao}/${total}
             </div>
 
-
             <p class="percentagem">
                 ${percentagem}%
             </p>
-
 
             <h3>
                 ${mensagem}
             </h3>
 
+            <br>
 
-            <div class="resultado-botoes">
+            <button
+                class="btn primary"
+                onclick="iniciarSimulado()">
 
-                <button
-                    class="btn primary"
-                    onclick="iniciarSimulado('Química')">
+                🔄 Refazer simulado
 
-                    🔄 Refazer simulado
+            </button>
 
-                </button>
+            <button
+                class="btn secondary"
+                onclick="mostrarConteudos()">
 
+                📖 Escolher outro conteúdo
 
-                <button
-                    class="btn secondary"
-                    onclick="fecharSimulado()">
-
-                    Voltar às categorias
-
-                </button>
-
-            </div>
+            </button>
 
         </div>
 
@@ -555,73 +848,54 @@ function mostrarResultado() {
 
 
 // ==========================================
-// FECHAR SIMULADO
+// FECHAR
 // ==========================================
 
-function fecharSimulado() {
+function fecharSelecao() {
 
     quizArea.style.display = "none";
 
-
-    const categorias =
-        document.getElementById("categorias");
-
-
-    if (categorias) {
-
-        categorias.scrollIntoView({
+    document.getElementById("categorias")
+        ?.scrollIntoView({
             behavior: "smooth"
         });
-
-    }
 }
 
 
 // ==========================================
-// LIGAR CATEGORIAS
+// CARTÕES
 // ==========================================
 
 document.querySelectorAll(".card")
     .forEach(card => {
 
-        card.addEventListener(
-            "click",
-            () => {
+        card.addEventListener("click", () => {
 
-                const nome =
-                    card.querySelector("strong");
+            const nome =
+                card.querySelector("strong");
 
+            if (!nome) return;
 
-                if (!nome) return;
-
-
-                const disciplina =
-                    nome.textContent.trim();
+            const disciplina =
+                nome.textContent.trim();
 
 
-                if (
-                    disciplina === "Química"
-                ) {
+            if (disciplina === "Química") {
 
-                    iniciarSimulado(
-                        "Química"
-                    );
+                selecionarDisciplina("Química");
 
-                } else {
+            } else {
 
-                    alert(
-                        "📚 " +
-                        disciplina +
-                        "\n\n" +
-                        "Esta área será " +
-                        "adicionada ao banco " +
-                        "de questões nas próximas etapas."
-                    );
-
-                }
+                alert(
+                    "📚 " +
+                    disciplina +
+                    "\n\n" +
+                    "Esta disciplina será adicionada em breve."
+                );
 
             }
-        );
+
+        });
 
     });
 
@@ -636,27 +910,19 @@ const iaBtn =
 
 if (iaBtn) {
 
-    iaBtn.addEventListener(
-        "click",
-        () => {
+    iaBtn.addEventListener("click", () => {
 
-            alert(
-                "🤖 Wwebba IA\n\n" +
-                "O módulo de Inteligência " +
-                "Artificial será integrado " +
-                "numa próxima etapa."
-            );
+        alert(
+            "🤖 Wwebba IA\n\n" +
+            "O módulo de IA será integrado " +
+            "numa próxima etapa."
+        );
 
-        }
-    );
+    });
 
 }
 
 
-// ==========================================
-// SISTEMA INICIADO
-// ==========================================
-
 console.log(
-    "🔥 Wwebba Teste — sistema iniciado."
+    "🔥 Wwebba Teste V3 iniciado."
 );
