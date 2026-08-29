@@ -1,21 +1,30 @@
 // ==========================================
-// WWEBBA TESTE — VERSÃO 3
-// SELEÇÃO DE CONTEÚDO + CONFIGURAÇÃO
+// WWEBBA TESTE — VERSÃO 4
+// SELEÇÃO + CONFIGURAÇÃO + QUIZ + RESULTADO
+// ==========================================
+
+
+// ==========================================
+// MENU
 // ==========================================
 
 const menuBtn = document.getElementById("menuBtn");
 const mainNav = document.getElementById("mainNav");
 
 if (menuBtn && mainNav) {
+
     menuBtn.addEventListener("click", () => {
         mainNav.classList.toggle("active");
     });
+
 }
 
 document.querySelectorAll("#mainNav a").forEach(link => {
+
     link.addEventListener("click", () => {
         mainNav.classList.remove("active");
     });
+
 });
 
 
@@ -116,7 +125,7 @@ const bancoQuestoes = {
 
 
 // ==========================================
-// ESTADO
+// ESTADO DO SISTEMA
 // ==========================================
 
 let disciplinaAtual = "";
@@ -127,9 +136,16 @@ let questoesAtuais = [];
 let indiceQuestao = 0;
 let pontuacao = 0;
 
+// NOVO: histórico completo das respostas
+let historicoRespostas = [];
+
+// NOVO: guarda a configuração do último simulado
+let quantidadeAtual = 0;
+let dificuldadeAtual = "todas";
+
 
 // ==========================================
-// ÁREA DO SISTEMA
+// ÁREA DO QUIZ
 // ==========================================
 
 const quizArea = document.createElement("section");
@@ -137,7 +153,31 @@ const quizArea = document.createElement("section");
 quizArea.id = "quizArea";
 quizArea.style.display = "none";
 
-document.querySelector("main").appendChild(quizArea);
+const mainElement = document.querySelector("main");
+
+if (mainElement) {
+    mainElement.appendChild(quizArea);
+}
+
+
+// ==========================================
+// FUNÇÃO DE SEGURANÇA PARA TEXTO
+// ==========================================
+
+function escaparHTML(texto) {
+
+    if (texto === undefined || texto === null) {
+        return "";
+    }
+
+    return String(texto)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
 
 
 // ==========================================
@@ -148,6 +188,9 @@ function selecionarDisciplina(disciplina) {
 
     disciplinaAtual = disciplina;
 
+    nivelAtual = "";
+    conteudoAtual = "";
+
     quizArea.style.display = "block";
 
     mostrarNiveis();
@@ -155,6 +198,7 @@ function selecionarDisciplina(disciplina) {
     quizArea.scrollIntoView({
         behavior: "smooth"
     });
+
 }
 
 
@@ -165,6 +209,7 @@ function selecionarDisciplina(disciplina) {
 function mostrarNiveis() {
 
     const niveis = [
+
         "7.ª Classe",
         "8.ª Classe",
         "9.ª Classe",
@@ -172,20 +217,24 @@ function mostrarNiveis() {
         "11.ª Classe",
         "12.ª Classe",
         "Universidade"
+
     ];
+
 
     quizArea.innerHTML = `
 
         <div class="quiz-container selection-container">
 
-            <div class="selection-icon">📚</div>
+            <div class="selection-icon">
+                📚
+            </div>
 
             <span class="quiz-label">
                 WWEBBA TESTE
             </span>
 
             <h2>
-                ${disciplinaAtual}
+                ${escaparHTML(disciplinaAtual)}
             </h2>
 
             <p class="selection-description">
@@ -205,7 +254,7 @@ function mostrarNiveis() {
                         </span>
 
                         <span>
-                            ${nivel}
+                            ${escaparHTML(nivel)}
                         </span>
 
                         <small>
@@ -227,7 +276,9 @@ function mostrarNiveis() {
             </button>
 
         </div>
+
     `;
+
 }
 
 
@@ -265,11 +316,11 @@ function mostrarConteudos() {
                 </div>
 
                 <span class="quiz-label">
-                    ${disciplinaAtual}
+                    ${escaparHTML(disciplinaAtual)}
                 </span>
 
                 <h2>
-                    ${nivelAtual}
+                    ${escaparHTML(nivelAtual)}
                 </h2>
 
                 <p class="selection-description">
@@ -286,6 +337,7 @@ function mostrarConteudos() {
                 </button>
 
             </div>
+
         `;
 
         return;
@@ -305,17 +357,16 @@ function mostrarConteudos() {
             </div>
 
             <span class="quiz-label">
-                ${disciplinaAtual}
+                ${escaparHTML(disciplinaAtual)}
             </span>
 
             <h2>
-                ${nivelAtual}
+                ${escaparHTML(nivelAtual)}
             </h2>
 
             <p class="selection-description">
                 Escolha o conteúdo que deseja estudar.
             </p>
-
 
             <div class="conteudo-list">
 
@@ -332,7 +383,7 @@ function mostrarConteudos() {
                         <div class="conteudo-item-text">
 
                             <strong>
-                                ${conteudo}
+                                ${escaparHTML(conteudo)}
                             </strong>
 
                             <small>
@@ -352,7 +403,6 @@ function mostrarConteudos() {
 
             </div>
 
-
             <button
                 class="btn secondary"
                 onclick="mostrarNiveis()">
@@ -362,7 +412,9 @@ function mostrarConteudos() {
             </button>
 
         </div>
+
     `;
+
 }
 
 
@@ -385,11 +437,57 @@ function selecionarConteudo(conteudo) {
 
 function mostrarConfiguracao() {
 
-    const quantidadeDisponivel =
+    const banco =
         bancoQuestoes[disciplinaAtual]
-        [nivelAtual]
-        [conteudoAtual]
-        .length;
+        ?.[nivelAtual]
+        ?.[conteudoAtual];
+
+
+    const quantidadeDisponivel =
+        banco ? banco.length : 0;
+
+
+    if (quantidadeDisponivel === 0) {
+
+        quizArea.innerHTML = `
+
+            <div class="quiz-container selection-container">
+
+                <div class="selection-icon">
+                    ⚠️
+                </div>
+
+                <h2>
+                    Nenhuma questão disponível
+                </h2>
+
+                <p class="selection-description">
+                    Este conteúdo ainda não possui questões.
+                </p>
+
+                <button
+                    class="btn secondary"
+                    onclick="mostrarConteudos()">
+
+                    ← Voltar
+
+                </button>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    let opcoesQuantidade = [5, 10, 15, 20]
+        .filter(numero => numero <= quantidadeDisponivel);
+
+
+    if (opcoesQuantidade.length === 0) {
+        opcoesQuantidade = [quantidadeDisponivel];
+    }
 
 
     quizArea.innerHTML = `
@@ -405,43 +503,35 @@ function mostrarConfiguracao() {
             </span>
 
             <h2>
-                ${conteudoAtual}
+                ${escaparHTML(conteudoAtual)}
             </h2>
 
             <p class="selection-description">
-                ${disciplinaAtual} · ${nivelAtual}
+                ${escaparHTML(disciplinaAtual)}
+                ·
+                ${escaparHTML(nivelAtual)}
             </p>
-
 
             <div class="config-box">
 
-                <label>
+                <label for="quantidadeQuestoes">
                     Número de questões
                 </label>
 
                 <select id="quantidadeQuestoes">
 
-                    ${[5, 10, 15, 20]
-                        .filter(numero => numero <= quantidadeDisponivel)
-                        .map(numero => `
-                            <option value="${numero}">
-                                ${numero} questões
-                            </option>
-                        `)
-                        .join("")}
+                    ${opcoesQuantidade.map(numero => `
 
-                    ${quantidadeDisponivel < 5
-                        ? `
-                            <option value="${quantidadeDisponivel}">
-                                ${quantidadeDisponivel} questões
-                            </option>
-                          `
-                        : ""}
+                        <option value="${numero}">
+                            ${numero} questões
+                        </option>
+
+                    `).join("")}
 
                 </select>
 
 
-                <label>
+                <label for="dificuldade">
                     Nível de dificuldade
                 </label>
 
@@ -488,6 +578,7 @@ function mostrarConfiguracao() {
         </div>
 
     `;
+
 }
 
 
@@ -495,19 +586,43 @@ function mostrarConfiguracao() {
 // INICIAR SIMULADO
 // ==========================================
 
-function iniciarSimulado() {
+function iniciarSimulado(refazer = false) {
 
-    const quantidade =
-        Number(
-            document.getElementById("quantidadeQuestoes")?.value
-        ) || 0;
+    let quantidade;
+    let dificuldade;
+
+
+    // Se for um novo simulado, pega os valores da configuração
+    if (!refazer) {
+
+        quantidade =
+            Number(
+                document.getElementById("quantidadeQuestoes")?.value
+            ) || 0;
+
+
+        dificuldade =
+            document.getElementById("dificuldade")?.value
+            || "todas";
+
+
+        quantidadeAtual = quantidade;
+        dificuldadeAtual = dificuldade;
+
+    } else {
+
+        // Ao refazer, utiliza a configuração anterior
+        quantidade = quantidadeAtual;
+        dificuldade = dificuldadeAtual;
+
+    }
 
 
     const banco =
         bancoQuestoes
         [disciplinaAtual]
-        [nivelAtual]
-        [conteudoAtual];
+        ?.[nivelAtual]
+        ?.[conteudoAtual];
 
 
     if (!banco || banco.length === 0) {
@@ -520,10 +635,44 @@ function iniciarSimulado() {
     }
 
 
-    // Embaralhar questões
+    // ======================================
+    // FILTRO DE DIFICULDADE
+    // ======================================
+    //
+    // Se as questões possuírem a propriedade
+    // "dificuldade", o sistema poderá filtrá-las.
+    //
+    // Como as questões atuais ainda não possuem
+    // essa propriedade, "todas" utiliza o banco inteiro.
+    //
+
+    let bancoFiltrado = [...banco];
+
+
+    if (dificuldade !== "todas") {
+
+        const filtradas =
+            banco.filter(
+                questao =>
+                    questao.dificuldade === dificuldade
+            );
+
+
+        // Se ainda não houver questões classificadas
+        // por dificuldade, evita deixar o aluno sem questões.
+        if (filtradas.length > 0) {
+            bancoFiltrado = filtradas;
+        }
+
+    }
+
+
+    // ======================================
+    // EMBARALHAR QUESTÕES
+    // ======================================
 
     const embaralhadas =
-        [...banco].sort(
+        [...bancoFiltrado].sort(
             () => Math.random() - 0.5
         );
 
@@ -531,13 +680,29 @@ function iniciarSimulado() {
     questoesAtuais =
         embaralhadas.slice(
             0,
-            Math.min(quantidade, banco.length)
+            Math.min(quantidade, bancoFiltrado.length)
         );
 
+
+    // ======================================
+    // RESETAR SIMULADO
+    // ======================================
 
     indiceQuestao = 0;
 
     pontuacao = 0;
+
+    historicoRespostas = [];
+
+
+    if (questoesAtuais.length === 0) {
+
+        alert(
+            "Não foi possível iniciar o simulado."
+        );
+
+        return;
+    }
 
 
     mostrarQuestao();
@@ -546,13 +711,21 @@ function iniciarSimulado() {
 
 
 // ==========================================
-// QUESTÃO
+// MOSTRAR QUESTÃO
 // ==========================================
 
 function mostrarQuestao() {
 
     const questao =
         questoesAtuais[indiceQuestao];
+
+
+    if (!questao) {
+
+        mostrarResultado();
+
+        return;
+    }
 
 
     const numero =
@@ -576,7 +749,9 @@ function mostrarQuestao() {
                 <div>
 
                     <span class="quiz-label">
-                        ${disciplinaAtual.toUpperCase()}
+                        ${escaparHTML(
+                            disciplinaAtual.toUpperCase()
+                        )}
                     </span>
 
                     <h3>
@@ -588,7 +763,8 @@ function mostrarQuestao() {
 
 
                 <div class="quiz-score">
-                    ${pontuacao} ponto${pontuacao !== 1 ? "s" : ""}
+                    ${pontuacao}
+                    ponto${pontuacao !== 1 ? "s" : ""}
                 </div>
 
             </div>
@@ -604,11 +780,13 @@ function mostrarQuestao() {
             <div class="question-box">
 
                 <p class="question-number">
-                    ${nivelAtual} · ${conteudoAtual}
+                    ${escaparHTML(nivelAtual)}
+                    ·
+                    ${escaparHTML(conteudoAtual)}
                 </p>
 
                 <h2>
-                    ${questao.pergunta}
+                    ${escaparHTML(questao.pergunta)}
                 </h2>
 
             </div>
@@ -628,7 +806,7 @@ function mostrarQuestao() {
                         </span>
 
                         <strong>
-                            ${alternativa}
+                            ${escaparHTML(alternativa)}
                         </strong>
 
                     </button>
@@ -643,11 +821,12 @@ function mostrarQuestao() {
         </div>
 
     `;
+
 }
 
 
 // ==========================================
-// RESPOSTA
+// RESPONDER
 // ==========================================
 
 function responder(indiceEscolhido) {
@@ -656,10 +835,16 @@ function responder(indiceEscolhido) {
         questoesAtuais[indiceQuestao];
 
 
+    if (!questao) {
+        return;
+    }
+
+
     const botoes =
         document.querySelectorAll(".alternativa");
 
 
+    // Impede clicar duas vezes
     botoes.forEach(botao => {
         botao.disabled = true;
     });
@@ -669,26 +854,78 @@ function responder(indiceEscolhido) {
         indiceEscolhido === questao.correta;
 
 
+    // ======================================
+    // PONTUAÇÃO
+    // ======================================
+
     if (acertou) {
 
         pontuacao++;
 
-        botoes[indiceEscolhido]
-            .classList.add("certa");
+        if (botoes[indiceEscolhido]) {
+            botoes[indiceEscolhido]
+                .classList.add("certa");
+        }
 
     } else {
 
-        botoes[indiceEscolhido]
-            .classList.add("errada");
+        if (botoes[indiceEscolhido]) {
 
-        botoes[questao.correta]
-            .classList.add("certa");
+            botoes[indiceEscolhido]
+                .classList.add("errada");
+
+        }
+
+
+        if (botoes[questao.correta]) {
+
+            botoes[questao.correta]
+                .classList.add("certa");
+
+        }
 
     }
 
 
+    // ======================================
+    // NOVO: GUARDAR HISTÓRICO
+    // ======================================
+
+    historicoRespostas.push({
+
+        numero: indiceQuestao + 1,
+
+        pergunta: questao.pergunta,
+
+        respostaEscolhida: indiceEscolhido,
+
+        textoRespostaEscolhida:
+            questao.alternativas[indiceEscolhido],
+
+        respostaCorreta: questao.correta,
+
+        textoRespostaCorreta:
+            questao.alternativas[questao.correta],
+
+        acertou: acertou,
+
+        explicacao:
+            questao.explicacao
+
+    });
+
+
+    // ======================================
+    // FEEDBACK
+    // ======================================
+
     const feedback =
         document.getElementById("feedback");
+
+
+    if (!feedback) {
+        return;
+    }
 
 
     feedback.innerHTML = `
@@ -696,20 +933,35 @@ function responder(indiceEscolhido) {
         <div class="feedback ${acertou ? "certo" : "errado"}">
 
             <strong>
-                ${acertou
+                ${
+                    acertou
                     ? "✅ Resposta correta!"
-                    : "❌ Resposta incorreta!"}
+                    : "❌ Resposta incorreta!"
+                }
             </strong>
 
             <p>
+
                 ${
                     acertou
-                    ? questao.explicacao
+
+                    ? escaparHTML(
+                        questao.explicacao
+                      )
+
                     : "Resposta correta: " +
-                      questao.alternativas[questao.correta] +
+                      escaparHTML(
+                          questao.alternativas[
+                              questao.correta
+                          ]
+                      ) +
                       "<br><br>" +
-                      questao.explicacao
+                      escaparHTML(
+                          questao.explicacao
+                      )
+
                 }
+
             </p>
 
         </div>
@@ -722,13 +974,16 @@ function responder(indiceEscolhido) {
             ${
                 indiceQuestao <
                 questoesAtuais.length - 1
+
                 ? "Próxima questão →"
+
                 : "Ver resultado"
             }
 
         </button>
 
     `;
+
 }
 
 
@@ -758,7 +1013,7 @@ function proximaQuestao() {
 
 
 // ==========================================
-// RESULTADO
+// RESULTADO FINAL
 // ==========================================
 
 function mostrarResultado() {
@@ -767,33 +1022,175 @@ function mostrarResultado() {
         questoesAtuais.length;
 
 
+    if (total === 0) {
+
+        quizArea.innerHTML = `
+
+            <div class="quiz-container resultado">
+
+                <div class="resultado-icon">
+                    ⚠️
+                </div>
+
+                <h2>
+                    Não há questões para apresentar.
+                </h2>
+
+                <button
+                    class="btn secondary"
+                    onclick="mostrarConteudos()">
+
+                    ← Voltar
+
+                </button>
+
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    const erros =
+        total - pontuacao;
+
+
     const percentagem =
         Math.round(
             (pontuacao / total) * 100
         );
 
 
+    // ======================================
+    // MENSAGEM
+    // ======================================
+
     let mensagem;
 
 
     if (percentagem >= 90) {
 
-        mensagem = "🏆 Excelente desempenho!";
+        mensagem =
+            "🏆 Excelente desempenho!";
 
     } else if (percentagem >= 70) {
 
-        mensagem = "👏 Muito bom desempenho!";
+        mensagem =
+            "👏 Muito bom desempenho!";
 
     } else if (percentagem >= 50) {
 
-        mensagem = "📚 Bom desempenho. Continue praticando!";
+        mensagem =
+            "📚 Bom desempenho. Continue praticando!";
 
     } else {
 
-        mensagem = "💪 Continue estudando. Você consegue!";
+        mensagem =
+            "💪 Continue estudando. Você consegue!";
 
     }
 
+
+    // ======================================
+    // REVISÃO DAS RESPOSTAS
+    // ======================================
+
+    const revisao =
+        historicoRespostas.map(item => {
+
+            const classe =
+                item.acertou
+                ? "revisao-certa"
+                : "revisao-errada";
+
+
+            const icone =
+                item.acertou
+                ? "✅"
+                : "❌";
+
+
+            return `
+
+                <div class="revisao-item ${classe}">
+
+                    <div class="revisao-cabecalho">
+
+                        <strong>
+                            ${icone} Questão ${item.numero}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="revisao-pergunta">
+
+                        <strong>
+                            ${escaparHTML(item.pergunta)}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="revisao-resposta">
+
+                        ${
+                            item.acertou
+                            ? "✅"
+                            : "❌"
+                        }
+
+                        <strong>
+                            Sua resposta:
+                        </strong>
+
+                        ${escaparHTML(
+                            item.textoRespostaEscolhida
+                        )}
+
+                    </div>
+
+
+                    <div class="revisao-correta">
+
+                        ✅
+
+                        <strong>
+                            Resposta correta:
+                        </strong>
+
+                        ${escaparHTML(
+                            item.textoRespostaCorreta
+                        )}
+
+                    </div>
+
+
+                    <div class="revisao-explicacao">
+
+                        <strong>
+                            💡 Explicação:
+                        </strong>
+
+                        <p>
+                            ${escaparHTML(
+                                item.explicacao
+                            )}
+                        </p>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+
+    // ======================================
+    // TELA FINAL
+    // ======================================
 
     quizArea.innerHTML = `
 
@@ -811,27 +1208,147 @@ function mostrarResultado() {
                 Simulado concluído
             </h2>
 
+
             <div class="pontuacao">
                 ${pontuacao}/${total}
             </div>
+
 
             <p class="percentagem">
                 ${percentagem}%
             </p>
 
+
             <h3>
                 ${mensagem}
             </h3>
 
-            <br>
+
+            <!-- ========================== -->
+            <!-- RESUMO -->
+            <!-- ========================== -->
+
+            <div class="resultado-resumo">
+
+                <div class="resultado-card">
+
+                    <span>
+                        📊
+                    </span>
+
+                    <strong>
+                        ${pontuacao}/${total}
+                    </strong>
+
+                    <small>
+                        Pontuação
+                    </small>
+
+                </div>
+
+
+                <div class="resultado-card">
+
+                    <span>
+                        ✅
+                    </span>
+
+                    <strong>
+                        ${pontuacao}
+                    </strong>
+
+                    <small>
+                        Acertos
+                    </small>
+
+                </div>
+
+
+                <div class="resultado-card">
+
+                    <span>
+                        ❌
+                    </span>
+
+                    <strong>
+                        ${erros}
+                    </strong>
+
+                    <small>
+                        Erros
+                    </small>
+
+                </div>
+
+
+                <div class="resultado-card">
+
+                    <span>
+                        🎯
+                    </span>
+
+                    <strong>
+                        ${percentagem}%
+                    </strong>
+
+                    <small>
+                        Aproveitamento
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================== -->
+            <!-- REVISÃO -->
+            <!-- ========================== -->
+
+            <div class="revisao-container">
+
+                <div class="revisao-titulo">
+
+                    <span>
+                        📝
+                    </span>
+
+                    <h3>
+                        Revisão das respostas
+                    </h3>
+
+                </div>
+
+
+                <div class="revisao-lista">
+
+                    ${revisao}
+
+                </div>
+
+            </div>
+
+
+            <!-- ========================== -->
+            <!-- BOTÕES -->
+            <!-- ========================== -->
 
             <button
                 class="btn primary"
-                onclick="iniciarSimulado()">
+                onclick="iniciarSimulado(true)">
 
                 🔄 Refazer simulado
 
             </button>
+
+
+            <button
+                class="btn secondary"
+                onclick="mostrarConfiguracao()">
+
+                ⚙️ Alterar configuração
+
+            </button>
+
 
             <button
                 class="btn secondary"
@@ -841,29 +1358,41 @@ function mostrarResultado() {
 
             </button>
 
+
+            <button
+                class="btn secondary"
+                onclick="mostrarNiveis()">
+
+                🎓 Escolher outro nível
+
+            </button>
+
         </div>
 
     `;
+
 }
 
 
 // ==========================================
-// FECHAR
+// FECHAR SELEÇÃO
 // ==========================================
 
 function fecharSelecao() {
 
     quizArea.style.display = "none";
 
+
     document.getElementById("categorias")
         ?.scrollIntoView({
             behavior: "smooth"
         });
+
 }
 
 
 // ==========================================
-// CARTÕES
+// CARTÕES DE DISCIPLINAS
 // ==========================================
 
 document.querySelectorAll(".card")
@@ -874,7 +1403,11 @@ document.querySelectorAll(".card")
             const nome =
                 card.querySelector("strong");
 
-            if (!nome) return;
+
+            if (!nome) {
+                return;
+            }
+
 
             const disciplina =
                 nome.textContent.trim();
@@ -887,10 +1420,12 @@ document.querySelectorAll(".card")
             } else {
 
                 alert(
+
                     "📚 " +
                     disciplina +
                     "\n\n" +
                     "Esta disciplina será adicionada em breve."
+
                 );
 
             }
@@ -913,9 +1448,11 @@ if (iaBtn) {
     iaBtn.addEventListener("click", () => {
 
         alert(
+
             "🤖 Wwebba IA\n\n" +
             "O módulo de IA será integrado " +
             "numa próxima etapa."
+
         );
 
     });
@@ -923,6 +1460,10 @@ if (iaBtn) {
 }
 
 
+// ==========================================
+// INICIALIZAÇÃO
+// ==========================================
+
 console.log(
-    "🔥 Wwebba Teste V3 iniciado."
+    "🔥 Wwebba Teste V4 iniciado com sucesso."
 );
