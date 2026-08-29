@@ -76,4 +76,3 @@ $("addQuestion").onclick=()=>{
  data[s].push({q,a,c,e});save();["newQuestion","a1","a2","a3","a4","explanation"].forEach(id=>$(id).value="");populateAdmin();renderSubjects();alert("Questão adicionada com sucesso.")
 };
 renderSubjects();
-
